@@ -3,9 +3,19 @@
 
 const router = require('express').Router()
 const locationsService = require('./locations.service')
+const authorizationMiddleware = require ('../authorization/authorization.middleware')
+const passport = require('passport')
 const {deleteById} = require("./locations.service");
 
-router.get('/locations', locationsService.getAll);
+router.get('/locations',
+    passport.authenticate('local', { session: false}),
+    authorizationMiddleware.canAccess(['admin']),
+    (req, res) => {
+        return res.status(200).send({locations:[]})
+    }
+)
+
+//router.get('/locations', locationsService.getAll);
 
 router.get('/locations/:id', locationsService.getById);
 
