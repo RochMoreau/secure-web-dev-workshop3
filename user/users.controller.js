@@ -32,14 +32,14 @@ router.get('/users/me',
     passport.authenticate('jwt',{session : false}),
     roleMiddleware(["admin"]),
     async(req,res) => {
-    const token = req.headers.authorization.split(' ')[1];
+    const token = await usersService.generateJWT(req.user._id,req.user.role);
     return res.status(200).send({users: await usersService.findMe(token),token:token})
 })
 router.delete('/users/me',
     passport.authenticate('jwt',{session: false}),
     roleMiddleware(['admin']),
     async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
+    const token = await usersService.generateJWT(req.user._id,req.user.role);
     return res.status(200).send({users: await usersService.deleteUser(token)})
 })
 router.put('/users/me',
