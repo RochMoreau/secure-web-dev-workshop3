@@ -48,3 +48,20 @@
    > Request (Get All: /locations , Get One: /locations/:id)
    > Delete: /locations/:id
    > ```
+## .ENV
+
+Le fichier .env contient une variable MONGO_URI avec le lien de la database MongoDB, ainsi qu'une variable SECRET_JWT avec une clé qui dans mon cas a été secret
+
+## Pour utiliser l'API
+lancer index.js
+Puis sur insomnia
+Pour se register : ajouter un body JSON à la requête 
+Pour se log mettez le même body JSON qui a été registered
+Tout utilisateur créé est user //il n'est pas possible de créé un admin
+Puis copier le token qui est retourné 
+Ajouter une Authorization "Bearer Token" et coller le token pour les autres fonction qui nécessite d'etres connecter 
+
+## SonarCloud
+
+https://sonarcloud.io/summary/new_code?id=tristrat_secure-web-dev-workshop3
+
