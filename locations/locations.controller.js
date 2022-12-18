@@ -1,29 +1,30 @@
 // This file is used to map API calls (Presentation Layer) with the
 // Business-Logic layer
-
 const router = require('express').Router()
 const locationsService = require('./locations.service')
-const authorizationMiddleware = require ('../authorization/authorization.middleware')
 const passport = require('passport')
-const {deleteById} = require("./locations.service");
+const authorizationMiddleware = require('../authorization/authorization.middleware')
+//const {deleteById} = require("./locations/locations.service");
 
-router.get('/locations',
-    passport.authenticate('local', { session: false}),
-    authorizationMiddleware.canAccess(['admin']),
-    (req, res) => {
-        return res.status(200).send({locations:[]})
+router.use('/', passport.authenticate('jwt', { session: false }))
+
+router.get('/',
+    authorizationMiddleware.canAccess(['admin, user']),
+    async (req, res) => {
+        return res.status(200).send({locations: await locationsService.getAll()});
     }
 )
 
 //router.get('/locations', locationsService.getAll);
 
-router.get('/locations/:id', locationsService.getById);
+router.get('/film/:filmname',authorizationMiddleware.canAccess(['admin', 'user']), locationsService.getByFilmName);
 
-router.put('/locations/:id', locationsService.update);
+router.get('/:id', authorizationMiddleware.canAccess(['admin', 'user']), locationsService.getById);
 
-router.post('/locations', locationsService.create)
+router.put('/:id', authorizationMiddleware.canAccess(['admin']),locationsService.update);
 
-router.delete('/locations', locationsService.deleteById)
+router.post('/', authorizationMiddleware.canAccess(['admin']),locationsService.create)
 
+router.delete('/locations/:id', authorizationMiddleware.canAccess(['admin']),locationsService.deleteById)
 
 module.exports = router

@@ -6,14 +6,20 @@ const port = 3000
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const User = require('./users/user_model')
+const jwtStrategy = require('./auth/jwt.strategy')
 const localStrategy = require('./auth/local.strategy')
-
+const session = require('express-session')
+app.use(session({
+    secret: 'YOUR_SECRET_HERE',
+    resave: false,
+    saveUninitialized: false,
+}))
 
 require('dotenv').config();
 mongoose.connect(process.env.MONGO_URI).then(()=> {console.log('Connected !')});
 
 app.use(bodyParser.json())
-app.use(locationController)
+app.use('/locations', locationController)
 app.use('/users', usersController)
 
 app.listen(port, () => {

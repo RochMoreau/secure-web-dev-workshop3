@@ -8,7 +8,7 @@ const canAccess = (allowedRoles = []) => (req, res, next) => {
     if (!req.user.role || !allowedRoles.includes(req.user.role)) {
         return res.status(403).send()
     }
-    return req.next()
+    return next()
 }
 
 module.exports = { canAccess }

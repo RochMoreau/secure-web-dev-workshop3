@@ -1,6 +1,8 @@
 const LocalStrategy = require('passport-local')
 const passport = require('passport')
 const usersService = require('../users/user_service')
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 
 passport.use(new LocalStrategy(
     async function(username,password,done) {
