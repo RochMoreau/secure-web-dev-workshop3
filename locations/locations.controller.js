@@ -28,8 +28,8 @@ router.get('/locations/:id', async(req,res) =>{
 
 router.post('/locations', async (req,res, next) =>{
 	try{
-		const locationAdd = await locationsService.addLocation({...req.body, endDate:new Date(req.body.endDate), startDate: new Date(req.body.startDate)})
-		return res.status(200).send(locationAdd)
+		const location = locationsService.addLocation({...req.body, endDate:new Date(req.body.endDate), startDate: new Date(req.body.startDate)})
+		return res.status(200).send(location)
 	}catch(e) {
 		return res.stat
 	}
