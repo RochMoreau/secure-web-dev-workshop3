@@ -2,7 +2,7 @@ const router = require('express').Router()
 const locationsService = require('./locations.service')
 const Location = require("./locations.model")
 const {addLocation} = require("./locations.service");
-//const roleMiddleware = require('../middleware/auth.middleware');
+
 require('../strategy/strategy.jwt');
 
 router.get('/', (req, res) => {
@@ -28,8 +28,8 @@ router.get('/locations/:id', async(req,res) =>{
 
 router.post('/locations', async (req,res, next) =>{
 	try{
-		const location = await locationsService.addLocation({...req.body, endDate:new Date(req.body.endDate), startDate: new Date(req.body.startDate)})
-		return res.status(200).send(location)
+		const locationAdd = await locationsService.addLocation({...req.body, endDate:new Date(req.body.endDate), startDate: new Date(req.body.startDate)})
+		return res.status(200).send(locationAdd)
 	}catch(e) {
 		return res.stat
 	}

@@ -15,7 +15,7 @@ app.use(bodyParser.json())
 app.use(locationController)
 app.use(userController)
 app.listen(port, async () => {
-	const result = await mongoose.connect(process.env.MONGO_URI);
+	await mongoose.connect(process.env.MONGO_URI);
 	console.log("Connect");
 	console.log(`API listening on port ${port}, visit http://localhost:${port}/`)
 })

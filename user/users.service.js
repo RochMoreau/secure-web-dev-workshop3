@@ -11,28 +11,13 @@ function findAll () {
         return error;
     }
 }
-/*
-function findMe (userId) {
-    return User.findById(userId);
-}
-*/
+
 async function findMe(token){
     const pass = jwt.verify(token,process.env.JWT_SECRET);
     const userId = pass.sub
     const user = await User.findById(userId)
     return user
 }
-/*
-async function deleteUser(username) {
-    try {
-        await User.findOneAndDelete({username:username});
-        return username;
-    } catch (error) {
-        console.log("user doesn't exist");
-        return error;
-    }
-}
- */
 async function deleteUser(token) {
     let userId = null
     try {
@@ -54,19 +39,7 @@ async function addUser(user) {
         throw new Error("user already exist")
     }
 }
-/*
-async function updateUser(username, newProperty){
-    try {
-        const hash = await bcrypt.hash(newProperty.password,numSaltRounds)
-        const user= await User.findOneAndUpdate({username:username}, {...newProperty,password:hash});
-        return user;
 
-    } catch (error) {
-        console.log("An error occured during updating ");
-        return error;
-    }
-}
-*/
 async function updateUser(token, newProperty){
     const pass = jwt.verify(token,process.env.JWT_SECRET)
     const userId = pass.sub
@@ -75,17 +48,6 @@ async function updateUser(token, newProperty){
     const user = await User.findOneAndUpdate({_id:userId},newProperty)
     return user
 }
-/*
-async function loginUser(user) {
-    try {
-        const utilisateur = await User.findOne(user);
-        return utilisateur;
-    } catch (error) {
-        console.log("An error occured");
-        return error;
-    }
-}*/
-
 
 async function verify(username, password) {
     try {
@@ -105,7 +67,6 @@ async function generateJWT(id) {
 
 module.exports.findAll = findAll;
 module.exports.findMe = findMe;
-//module.exports.loginUser = loginUser;
 module.exports.addUser = addUser;
 module.exports.deleteUser = deleteUser;
 module.exports.updateUser = updateUser;
