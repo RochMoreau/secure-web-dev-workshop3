@@ -1,34 +1,53 @@
-// This file holds the Business-Logic layer, interacting with Data Layer
-
 const Location = require('./locations.model')
 
-function findAll () {
-	return Location.find({}).limit(10).lean()
+async function findAll () {
+	try {
+		const response = await Location.find();
+		return response;
+	} catch (error) {
+		console.log("location doesn't exist");
+		console.log(error);
+	}
 }
 
-function findOne ( id){
-	return Location.findById(id)
+async function findOne(id){
+	const location = await Location.findById(id)
+	if(!location)
+		throw new Error("Not found")
+	return location;
 }
 
-function Add(content) {
-	const Local = new Location(content)
-	Local.save()
-	return Local
+function addLocation(data){
+	try{
+		const location = new Location(data)
+		location.save()
+	}catch(e){
+		throw new Error("Wrong data")
+	}
+	return location
 }
 
-async function Del(item) {
-	console.log(item)
-	const result = await Location.deleteOne({_id: item})
-	return result.deletedCount
+function deleteByID(id){
+	const location = Location.findById( {_id : id})
+	if(!location)
+		throw new Error("Not found")
+	else
+		Location.deleteOne({_id: id})
+	return location
 }
 
-async function Update(id, content) {
-	const result = await Location.updateOne({_id: id}, content)
-	return result
+
+function updateLocation(id, update){
+	const location = Location.findOne({ _id: id });
+	if(!location)
+		throw new Error("Not found")
+	else
+		Location.updateOne({_id:id})
+	return location
 }
 
-module.exports.findAll = findAll
+module.exports.updateLocation = updateLocation;
 module.exports.findOne = findOne
-module.exports.Add = Add
-module.exports.Del = Del
-module.exports.Update = Update
+module.exports.findAll = findAll
+module.exports.addLocation = addLocation;
+module.exports.deleteById = deleteByID;
